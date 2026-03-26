@@ -5,32 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>mwm - Movie Watchlist Manager</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+
+    <header class="system-top-bar">
+        <div class="top-logo">mwm Movie Watchlist Manager</div>
+    </header>
 
     <div id="auth-overlay" class="auth-container">
         <div class="auth-box">
             <h2 id="auth-title">Sign In</h2>
-            <input type="text" id="auth-username" placeholder="Username">
-            <input type="password" id="auth-password" placeholder="Password">
+            <div class="input-group">
+                <input type="text" id="auth-username" placeholder="Username">
+            </div>
+            <div class="input-group password-wrapper">
+                <input type="password" id="auth-password" placeholder="Password">
+                <i class="fas fa-eye toggle-password" onclick="togglePass('auth-password')"></i>
+            </div>
+            <div id="register-only-fields" style="display: none;">
+                <div class="input-group password-wrapper">
+                    <input type="password" id="auth-confirm-password" placeholder="Confirm Password">
+                    <i class="fas fa-eye toggle-password" onclick="togglePass('auth-confirm-password')"></i>
+                </div>
+                <p class="pw-hint">Min 8 chars, 1 number, 1 symbol (!@#$)</p>
+            </div>
             <button id="auth-submit-btn" class="primary-btn">Login</button>
             <p id="auth-toggle-text">Don't have an account? <a href="#" id="toggle-auth">Sign Up</a></p>
         </div>
     </div>
 
     <div id="main-app" class="app-wrapper" style="display: none;">
-        
         <nav class="sidebar">
-            <div class="logo-container">
-                <div class="logo-circle">
-                    <img src="https://via.placeholder.com/50" alt="logo" style="border-radius:50%">
-                </div>
-                <span class="logo-text">mwm</span>
-            </div>
             <ul class="nav-menu">
-                <li onclick="showPage('profile')">Profile</li>
-                <li onclick="showPage('home')" class="active">Home</li>
-                <li onclick="showPage('about')">About</li>
+                <li onclick="showPage('profile')" class="nav-item" id="nav-profile">Profile</li>
+                <li onclick="showPage('home')" class="nav-item active" id="nav-home">Home</li>
+                <li onclick="showPage('about')" class="nav-item" id="nav-about">About</li>
             </ul>
             <div class="sidebar-footer">
                 <span id="display-user">Username</span>
@@ -39,36 +49,36 @@
         </nav>
 
         <main class="content">
-            
             <section id="page-home" class="page">
-                <header class="page-header">
-                    <h2>Movie Watchlist Manager</h2>
+                <div class="home-header">
                     <div class="tab-group">
                         <button id="tab-watching" class="tab-btn active" onclick="switchTab('Watching')">Watching</button>
                         <button id="tab-watched" class="tab-btn" onclick="switchTab('Watched')">Watched</button>
                     </div>
-                </header>
-                <button class="add-trigger-btn" onclick="openModal()">ADD +</button>
+                    <button id="add-btn-main" class="add-trigger-btn" onclick="openModal('movie-modal')">ADD +</button>
+                </div>
                 <div id="movie-grid" class="movie-grid"></div>
             </section>
 
             <section id="page-profile" class="page" style="display:none;">
                 <h2>User Profile</h2>
                 <div class="profile-card">
-                    <p><strong>Username:</strong> <span id="profile-name">User</span></p>
-                    <p><strong>Account Status:</strong> Active</p>
+                    <p><strong>Username:</strong> <span id="profile-name"></span></p>
+                    <p><strong>Status:</strong> Online</p>
                 </div>
             </section>
 
             <section id="page-about" class="page" style="display:none;">
                 <h2>About the System</h2>
-                <p>The Movie Watchlist Manager is a web-based system designed to help users track movies they are watching or have watched[cite: 55, 56, 58].</p>
-                <h3>Developers</h3>
+                <p>The Movie Watchlist Manager is a web-based system designed to help users manage and track movies they are watching.</p>
                 <ul>
-                    <li>Developer 1</li>
-                    <li>Developer 2</li>
-                    <li>Developer 3</li>
+                    <li>Organize movies into Watching and Watched categories.</li>
+                    <li>Simple and organized tracking.</li>
                 </ul>
+                <h3>Developers</h3>
+                <p>• Developer 1</p>
+                <p>• Developer 2</p>
+                <p>• Developer 3</p>
             </section>
         </main>
     </div>
@@ -76,15 +86,32 @@
     <div id="movie-modal" class="modal">
         <div class="modal-content">
             <h3>Add New Movie</h3>
-            <label>Title:</label>
-            <input type="text" id="inp-title">
-            <label>Genre:</label>
-            <input type="text" id="inp-genre">
-            <label>Date Created:</label>
-            <input type="date" id="inp-date">
+            <label>Title:</label> <input type="text" id="inp-title">
+            <label>Genre:</label> <input type="text" id="inp-genre">
+            <label>Date Created:</label> <input type="date" id="inp-date">
             <div class="modal-btns">
                 <button onclick="saveMovie()" class="primary-btn">ADD</button>
-                <button onclick="closeModal()" class="cancel-btn">Cancel</button>
+                <button onclick="closeModal('movie-modal')" class="cancel-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="rate-modal" class="modal">
+        <div class="modal-content">
+            <h3>Review Movie</h3>
+            <label>Rate:</label>
+            <select id="inp-rating">
+                <option value="1">★☆☆☆☆</option>
+                <option value="2">★★☆☆☆</option>
+                <option value="3">★★★☆☆</option>
+                <option value="4">★★★★☆</option>
+                <option value="5">★★★★★</option>
+            </select>
+            <label>Comment:</label>
+            <textarea id="inp-comment" placeholder="How was the movie?"></textarea>
+            <div class="modal-btns">
+                <button id="confirm-finish-btn" class="primary-btn">Finish</button>
+                <button onclick="closeModal('rate-modal')" class="cancel-btn">Cancel</button>
             </div>
         </div>
     </div>
