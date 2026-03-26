@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mwm - Movie Watchlist Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="auth-overlay" class="auth-container">
+        <div class="auth-box">
+            <h2 id="auth-title">Sign In</h2>
+            <input type="text" id="auth-username" placeholder="Username">
+            <input type="password" id="auth-password" placeholder="Password">
+            <button id="auth-submit-btn" class="primary-btn">Login</button>
+            <p id="auth-toggle-text">Don't have an account? <a href="#" id="toggle-auth">Sign Up</a></p>
+        </div>
+    </div>
+
+    <div id="main-app" class="app-wrapper" style="display: none;">
+        
+        <nav class="sidebar">
+            <div class="logo-container">
+                <div class="logo-circle">
+                    <img src="https://via.placeholder.com/50" alt="logo" style="border-radius:50%">
+                </div>
+                <span class="logo-text">mwm</span>
+            </div>
+            <ul class="nav-menu">
+                <li onclick="showPage('profile')">Profile</li>
+                <li onclick="showPage('home')" class="active">Home</li>
+                <li onclick="showPage('about')">About</li>
+            </ul>
+            <div class="sidebar-footer">
+                <span id="display-user">Username</span>
+                <button class="logout-btn" onclick="logout()">Log Out</button>
+            </div>
+        </nav>
+
+        <main class="content">
+            
+            <section id="page-home" class="page">
+                <header class="page-header">
+                    <h2>Movie Watchlist Manager</h2>
+                    <div class="tab-group">
+                        <button id="tab-watching" class="tab-btn active" onclick="switchTab('Watching')">Watching</button>
+                        <button id="tab-watched" class="tab-btn" onclick="switchTab('Watched')">Watched</button>
+                    </div>
+                </header>
+                <button class="add-trigger-btn" onclick="openModal()">ADD +</button>
+                <div id="movie-grid" class="movie-grid"></div>
+            </section>
+
+            <section id="page-profile" class="page" style="display:none;">
+                <h2>User Profile</h2>
+                <div class="profile-card">
+                    <p><strong>Username:</strong> <span id="profile-name">User</span></p>
+                    <p><strong>Account Status:</strong> Active</p>
+                </div>
+            </section>
+
+            <section id="page-about" class="page" style="display:none;">
+                <h2>About the System</h2>
+                <p>The Movie Watchlist Manager is a web-based system designed to help users track movies they are watching or have watched[cite: 55, 56, 58].</p>
+                <h3>Developers</h3>
+                <ul>
+                    <li>Developer 1</li>
+                    <li>Developer 2</li>
+                    <li>Developer 3</li>
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <div id="movie-modal" class="modal">
+        <div class="modal-content">
+            <h3>Add New Movie</h3>
+            <label>Title:</label>
+            <input type="text" id="inp-title">
+            <label>Genre:</label>
+            <input type="text" id="inp-genre">
+            <label>Date Created:</label>
+            <input type="date" id="inp-date">
+            <div class="modal-btns">
+                <button onclick="saveMovie()" class="primary-btn">ADD</button>
+                <button onclick="closeModal()" class="cancel-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
